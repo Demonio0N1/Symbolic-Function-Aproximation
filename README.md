@@ -210,5 +210,78 @@ El objetivo final es descubrir funciones matemáticas interpretables que describ
 manteniendo un equilibrio entre precisión y simplicidad.
 
 ===========================================================
-Fin del documento
+💡 Inspirado en: Gal-Lahat/Function-Aprox (GitHub), reimplementado y extendido con optimización GPU, derivadas simbólicas y AOS adaptativo.
 ===========================================================
+
+
+# === Function-Aprox: CPU Requirements ===
+# Compatible con Python >= 3.10
+# Esta versión no requiere GPU (usa NumPy como backend)
+
+numpy>=2.0
+sympy>=1.12
+matplotlib>=3.8
+tqdm>=4.65
+nbformat>=5.9
+scipy>=1.11
+
+pip install -r requirements.txt
+
+
+# === Function-Aprox: GPU Requirements (CUDA 13.x / RTX 40xx) ===
+# Compatible con Python >= 3.10 y NVIDIA RTX 4060 Ti / CUDA 13.0
+# Usa PyTorch para fine-tuning y CuPy para evaluación simbólica masiva.
+
+# Núcleo
+numpy>=2.0
+sympy>=1.12
+matplotlib>=3.8
+tqdm>=4.65
+nbformat>=5.9
+scipy>=1.11
+
+# GPU acceleration
+cupy-cuda13x==13.6.0   # CuPy para CUDA 13.x
+torch==2.9.0           # PyTorch con soporte CUDA/cu12.x
+
+pip install -r requirements-gpu.txt
+
+
+
+######Conda yaml#####
+
+name: function-aprox
+channels:
+  - conda-forge
+dependencies:
+  # --- Python base ---
+  - python=3.10
+  - pip
+
+  # --- Núcleo científico ---
+  - numpy>=2.0
+  - sympy>=1.12
+  - scipy>=1.11
+  - matplotlib>=3.8
+  - tqdm>=4.65
+
+  # --- Notebooks ---
+  - jupyter
+  - ipykernel
+  - nbformat>=5.9
+
+  # --- Utilidades varias ---
+  - packaging
+  - typing_extensions
+
+  # --- Instalar por pip (GPU/cuDNN y PyTorch/CuPy) ---
+  - pip:
+      - cupy-cuda13x==13.6.0   # CuPy para CUDA 13.x (driver 580.95.05)
+      - torch==2.9.0           # PyTorch con runtime CUDA propio (cu12.x)
+
+
+conda env create -f environment.yml
+conda activate function-aprox
+
+
+
