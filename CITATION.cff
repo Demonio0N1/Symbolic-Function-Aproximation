@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+title: "Function-Aprox: GPU-Accelerated Symbolic Function Discovery"
+authors:
+  - family-names: "Guamán Toasa"
+    given-names: "Gary Leonel"
+date-released: "2025-10-27"
+license: "MIT"
+version: "1.0.0"
+repository-code: "https://github.com/tuusuario/Function-Aprox"
