@@ -285,3 +285,70 @@ conda activate function-aprox
 
 
 
+
+-----------------------------------------------------------
+9. RENDIMIENTO GPU (optimización Fase 2) — medido en RTX 4090
+-----------------------------------------------------------
+
+Perfilado del código original (torch.profiler, 8 generaciones):
+- CPU-bound: 577.480 lanzamientos de kernel y ~3.200 sincronizaciones
+  CPU-GPU por generación (un .item() por cada individuo evaluado).
+- Tiempo CUDA real: 0,7 s de 3,7 s totales (la GPU estaba casi ociosa).
+
+Optimizaciones (flags en la primera celda del notebook):
+- FITNESS_CACHE: memoiza fitness por individuo y generación (el torneo,
+  el hill-climbing y la selección reevaluaban los mismos individuos).
+- BATCH_EVAL: intérprete plano por niveles — la población se aplana a un
+  DAG y cada nivel se evalúa agrupando por operador (decenas de kernels
+  por lote en vez de miles); todos los MSE se calculan en una sola
+  reducción (pop, n_puntos) y se sincroniza una vez por lote.
+- AOS_UPDATE_CHUNK: hijos por sub-lote entre recompensas AOS.
+  * 1 (default): recompensa inmediata por hijo, como el original.
+  * 16: máxima velocidad (~x16 por generación) con recompensas
+    levemente diferidas (dinámica AOS menos reactiva).
+  Diagnóstico clave: diferir todas las recompensas al final de la
+  generación (1 update/gen en vez de ~150) degrada la búsqueda — la
+  selección adaptativa de operadores necesita señal casi inmediata.
+  Nota de reproducibilidad: la evaluación por lotes cambia el orden de
+  reducción del MSE en float32 (+-1 ulp), así que una corrida batch
+  puede divergir de la clásica tras decenas de generaciones aunque el
+  algoritmo sea el mismo; con BATCH_EVAL=False la trayectoria es
+  bit-exacta respecto al código original (la caché no altera nada).
+- SIMPLIFY_EVERY / DEDUP_EVERY: control de bloat periódico (plegado de
+  constantes, identidades x*1 / x+0 / x^1, deduplicación semántica por
+  firma de 16 puntos evaluada en GPU por lotes).
+- fine_tune_hof(): ajusta las constantes de todo el Hall of Fame en
+  paralelo con un único optimizador Adam (una pérdida sumada por paso).
+
+Speedups medidos (POP=160, GEN=120, datos completos, RTX 4090):
+
+| Configuración                                | ms/gen | Speedup |
+|----------------------------------------------|-------:|--------:|
+| Original (sin caché, sin lotes)              |   2349 |    x1,0 |
+| + caché de fitness (2.1)                     |    734 |    x3,2 |
+| + lotes, chunk AOS=1 (fiel al original)      |    429 |    x5,5 |
+| + lotes, chunk AOS=16 (máxima velocidad)     |    149 |   x15,8 |
+| + simplify + dedup (2.5, chunk=16)           |    168 |   x14,0 |
+
+Además, el micro-benchmark de la evaluación pura de una población fija
+(160 árboles, 400 puntos): 34,1 ms (recursiva con un sync por árbol)
+-> 4,5 ms (intérprete plano, un sync) = x7,5.
+
+Caso de prueba completo 2x^3 + 3sin(x) + 1 (POP=160, GEN=1000):
+- Original (seed 0):                    440,7 s — recupera (MSE 1,9e-11)
+- Caché, bit-exacto (BATCH_EVAL=False): 148,5 s — misma expresión, x3,0
+- Lotes chunk=1 (seed 2, demo):         109,8 s — recupera (MSE 2,8e-11)
+- Lotes chunk=16 + control de bloat:     ~77 s por corrida (x5,7)
+El tiempo por corrida varía con el bloat de cada trayectoria (una semilla
+con árboles gigantes puede tardar mucho más); el control de bloat
+(SIMPLIFY_EVERY/DEDUP_EVERY) lo mitiga. La tasa de recuperación (~2/5
+semillas en el original y en las rutas nuevas) se aborda en la Fase 3.
+
+Evaluado y descartado con datos (2.3):
+- torch.compile sobre la pasada vectorizada: 11 ms -> 0,5 ms una vez
+  compilada, PERO cuesta 11,5 s de compilación y la estructura de la
+  población cambia cada generación (recompilación constante). Inviable
+  para el bucle evolutivo; prometedor para estructuras fijas (modo EML).
+- TF32 activado por defecto (inocuo: no hay matmuls en la evaluación).
+- float64: solo x1,26 más lento (ops limitadas por ancho de banda);
+  el flag DTYPE="float64" queda disponible si se necesita precisión.
