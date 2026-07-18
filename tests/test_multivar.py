@@ -45,6 +45,6 @@ def test_evolve_multivar_smoke(eng):
                                           generations=60, max_depth=4, verbose=False, hof_k=5)
         # debe al menos acercarse claramente (var(Y) ~ 2.4)
         assert fit < 0.5*float(np.var(Y)), fit
-        assert eng.N_VARS == 2
+        assert eng.config.N_VARS == 2
     finally:
-        eng.N_VARS = 1   # evolve fija el global; lo restauramos para otros tests
+        eng.config.N_VARS = 1   # evolve fija el global; lo restauramos para otros tests

@@ -1,3 +1,5 @@
 nb_src.py
 __pycache__/
 .pytest_cache/
+mejor_expresion.json
+checkpoint_demo.json

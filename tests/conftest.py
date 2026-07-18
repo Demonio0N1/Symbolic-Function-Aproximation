@@ -1,29 +1,16 @@
-# Carga el motor definido en el notebook (solo las celdas de definiciones,
-# sin ejecutar la demo) y lo expone como fixture de sesión para pytest.
-import json
+# Los tests usan el paquete symreg directamente (Fase 6).
+# El fixture se llama "eng" por compatibilidad con los tests de fases previas,
+# cuando el motor se cargaba desde el notebook.
 import pathlib
-import types
+import sys
 
 import pytest
 
-NB_PATH = pathlib.Path(__file__).resolve().parents[1] / "FunctionAprox_GPU_Symbolic_AOS_PLUS.ipynb"
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-
-def _load_engine():
-    nb = json.loads(NB_PATH.read_text(encoding="utf-8"))
-    chunks = []
-    for cell in nb["cells"]:
-        if cell["cell_type"] != "code":
-            continue
-        code = "".join(cell["source"])
-        if "=== Datos de prueba ===" in code:
-            break  # a partir de aquí empieza la demo (ejecuta la evolución)
-        chunks.append(code)
-    mod = types.ModuleType("symeng")
-    exec(compile("\n".join(chunks), str(NB_PATH), "exec"), mod.__dict__)
-    return mod
+import symreg  # noqa: E402
 
 
 @pytest.fixture(scope="session")
 def eng():
-    return _load_engine()
+    return symreg

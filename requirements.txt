@@ -1,0 +1,15 @@
+# Núcleo
+numpy>=2.0
+sympy>=1.12
+scipy>=1.11
+torch>=2.2          # CUDA opcional: instala la rueda cu12x para GPU
+matplotlib>=3.8
+
+# Notebook / demo
+jupyter
+ipykernel
+nbformat>=5.9
+
+# Desarrollo
+pytest>=8.0
+jupytext>=1.16
