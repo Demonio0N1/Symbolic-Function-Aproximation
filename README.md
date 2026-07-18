@@ -395,3 +395,31 @@ constantes; presupuesto de tiempo comparable):
 Las islas con migración son el nuevo default de la demo (ISLANDS=4,
 GEN=250): recuperan el caso de prueba en todas las semillas probadas con
 una cuarta parte del tiempo del original.
+
+-----------------------------------------------------------
+11. OPERADOR EML (Fase 4) — exp(x) - ln(y)
+-----------------------------------------------------------
+
+Basado en A. Odrzywolek, "All elementary functions from a single binary
+operator" (arXiv:2603.21852): eml(x,y) = exp(x) - ln(y) genera todas las
+funciones elementales, y el paper lo propone para regresión simbólica
+(sección 4.3).
+
+Flags (primera celda):
+- EML_MODE = "off" | "operator" | "pure"
+  * "off": comportamiento idéntico al catálogo clásico.
+  * "operator": la clase Eml(Binary) entra al catálogo (build_catalogs y
+    fase final del currículum) y el AOS la pondera como a cualquier otro
+    operador. Versión numéricamente segura y diferenciable en torch:
+    eml_(a,b) = exp_safe(a) - log_(|b|+1e-8).
+  * "pure": gramática S -> hoja_afin | eml(S,S) con hojas
+    alpha_i + beta_i*x entrenadas por gradiente en GPU (eml_pure_fit).
+    Los multi-starts (la init aleatoria falla a profundidad > 4 según el
+    paper) se entrenan EN PARALELO como dimensión extra del tensor
+    (EML_PURE_STARTS reinicios, un solo Adam) y una evolución corta con
+    catálogo eml-only sirve de inicializador de pesos: cada subárbol
+    no-eml del mejor evolutivo se aproxima por una hoja afín ajustada
+    por mínimos cuadrados en GPU. Aquí torch.compile SÍ aplica
+    (estructura fija, se compila una vez).
+- EML_SYMPY_EXPAND: to_sympy() muestra eml expandido a exp/ln (forma
+  evaluable, usada por el test de ida y vuelta) o compacto eml(u,v).
