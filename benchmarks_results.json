@@ -1,0 +1,1202 @@
+[
+ {
+  "target": "propia",
+  "config": "catalogo",
+  "seed": 0,
+  "mse": 2.4757753139259542e-11,
+  "nodos": 18,
+  "t": 70.8,
+  "recuperada": true,
+  "expr": "((((x * x) * (x + x)) + (sin(x) + sin(x))) + (sin(x) + 1))"
+ },
+ {
+  "target": "propia",
+  "config": "catalogo",
+  "seed": 1,
+  "mse": 2.6549342585502345e-11,
+  "nodos": 18,
+  "t": 63.2,
+  "recuperada": true,
+  "expr": "-((((-1 - sin(x)) - (sin(x) * 2)) - ((x * x) * (x + x))))"
+ },
+ {
+  "target": "propia",
+  "config": "catalogo",
+  "seed": 2,
+  "mse": 2.8453401093586628e-11,
+  "nodos": 23,
+  "t": 91.7,
+  "recuperada": true,
+  "expr": "(((((sin(x) - -(sin(x))) + 1) + sin(x)) - x) + (((x + x) * (x * x)) + x))"
+ },
+ {
+  "target": "propia",
+  "config": "catalogo",
+  "seed": 3,
+  "mse": 5.0964441000722616e-11,
+  "nodos": 20,
+  "t": 78.0,
+  "recuperada": true,
+  "expr": "(sin(x) + (sin(x) + (sin(x) + (cos(abs(0)) + (x * ((x + x) * x))))))"
+ },
+ {
+  "target": "propia",
+  "config": "catalogo",
+  "seed": 4,
+  "mse": 0.09953591227531433,
+  "nodos": 114,
+  "t": 111.4,
+  "recuperada": false,
+  "expr": "(((x * x) + sin(-(((sqrt(|(sqrt(|(cos((2.6387 / x)) - (1.0909 * -3.2662))) * abs(log(|log(|-(sin(((1.1546 * x) + 0.0083712)))|+eps)|+eps)))) + log(|sin((1.5 ^ x"
+ },
+ {
+  "target": "propia",
+  "config": "catalogo+eml",
+  "seed": 0,
+  "mse": 0.0017716034781187773,
+  "nodos": 22,
+  "t": 71.9,
+  "recuperada": false,
+  "expr": "((((x + x) * (x * x)) + ((sin(x) * abs(-2.2047)) + 1)) + sin((sin(sin(x)) + 0)))"
+ },
+ {
+  "target": "propia",
+  "config": "catalogo+eml",
+  "seed": 1,
+  "mse": 0.04660925269126892,
+  "nodos": 88,
+  "t": 113.3,
+  "recuperada": false,
+  "expr": "((((x + x) * (x * x)) + (1.9877 * cos((sqrt(|((sqrt(|(x + x)) - (0.67467 + -(x))) - sqrt(|(sin((4.5252 * x)) / abs((x + -0.65393)))))) - x)))) + (1.8762 * cos(("
+ },
+ {
+  "target": "propia",
+  "config": "catalogo+eml",
+  "seed": 2,
+  "mse": 0.015194680541753769,
+  "nodos": 91,
+  "t": 103.1,
+  "recuperada": false,
+  "expr": "((((-((sqrt(|x) - sin(x))) - x) + ((x + -0.58395) * abs(-((abs(x) * x))))) ^ cos(sin((x - x)))) + (sqrt(|(sqrt(|-(-((abs(x) * (x * x))))) + (sin(cos(sqrt(|sqrt("
+ },
+ {
+  "target": "propia",
+  "config": "catalogo+eml",
+  "seed": 3,
+  "mse": 2.462003517722522e-11,
+  "nodos": 23,
+  "t": 87.1,
+  "recuperada": true,
+  "expr": "(((sin(x) * sqrt(|-3.9591)) - ((sin(x) + sin(1.4282)) * -(sqrt(|1.0206)))) + ((x + x) * (x * x)))"
+ },
+ {
+  "target": "propia",
+  "config": "catalogo+eml",
+  "seed": 4,
+  "mse": 2.4838540946259258e-11,
+  "nodos": 15,
+  "t": 74.1,
+  "recuperada": true,
+  "expr": "((3 * (sin(2.8018) + sin(x))) + ((x * x) * (x + x)))"
+ },
+ {
+  "target": "propia",
+  "config": "eml_puro",
+  "seed": 0,
+  "mse": 1522.4017333984375,
+  "nodos": 203,
+  "t": 43.5,
+  "recuperada": false,
+  "expr": "eml((1.2727 + (0.87935 * x)), eml(eml(eml(eml((-0.11111 + (-0.6 * x)), eml(eml((-1 + (-0.16667 * x)), (0.21166 + (0.42331 * x))), eml(eml((0.084662 + (-0.33333 "
+ },
+ {
+  "target": "propia",
+  "config": "eml_puro",
+  "seed": 1,
+  "mse": 1679.6168212890625,
+  "nodos": 167,
+  "t": 22.3,
+  "recuperada": false,
+  "expr": "eml((1.5455 + (0.82162 * x)), eml(eml(eml(eml(eml(eml((-0.93953 + (-0.57143 * x)), eml((1 + (0.375 * x)), (1.25 + (-0.77778 * x)))), eml(eml((-0.91667 + (1.25 *"
+ },
+ {
+  "target": "propia",
+  "config": "eml_puro",
+  "seed": 2,
+  "mse": 2140.067626953125,
+  "nodos": 191,
+  "t": 32.7,
+  "recuperada": false,
+  "expr": "eml((1.3503 + (0.85714 * x)), eml(eml(eml((-0.28571 + (0.74294 * x)), eml(eml(eml(eml((-0.2 + (1.5636 * x)), (-1.0959 + (1.6644 * x))), eml((1.6364 + (-1.281 * "
+ },
+ {
+  "target": "propia",
+  "config": "eml_puro",
+  "seed": 3,
+  "mse": 1588.2218017578125,
+  "nodos": 215,
+  "t": 41.2,
+  "recuperada": false,
+  "expr": "eml((1.2789 + (0.86729 * x)), eml(eml(eml(eml(eml(eml(eml((-1.5216 + (0.5 * x)), (-1.625 + (-0.28571 * x))), eml((0.8 + (0.63636 * x)), (-0.75 + (-0.012449 * x)"
+ },
+ {
+  "target": "propia",
+  "config": "eml_puro",
+  "seed": 4,
+  "mse": 1282.2906494140625,
+  "nodos": 95,
+  "t": 16.3,
+  "recuperada": false,
+  "expr": "eml((1.5074 + (0.83333 * x)), eml(eml(eml(eml((0.43232 + (-1.3333 * x)), eml(eml(eml((1.2297 + (-1.5556 * x)), (0.13953 + (-1.2525 * x))), eml((0.68166 + (1.160"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo",
+  "seed": 0,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 33.4,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo",
+  "seed": 1,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 34.0,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo",
+  "seed": 2,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 33.4,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo",
+  "seed": 3,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 33.2,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo",
+  "seed": 4,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 33.4,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo+eml",
+  "seed": 0,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 34.0,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo+eml",
+  "seed": 1,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 34.3,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo+eml",
+  "seed": 2,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 34.5,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo+eml",
+  "seed": 3,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 34.3,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "catalogo+eml",
+  "seed": 4,
+  "mse": 0.0015107649378478527,
+  "nodos": 4,
+  "t": 34.0,
+  "recuperada": false,
+  "expr": "-(cos(sqrt(|x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "eml_puro",
+  "seed": 0,
+  "mse": 0.003294342430308461,
+  "nodos": 11,
+  "t": 6.9,
+  "recuperada": false,
+  "expr": "eml((-1.539 + (1.6931 * x)), (3.148 + (1.4545 * x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "eml_puro",
+  "seed": 1,
+  "mse": 0.0007524475222453475,
+  "nodos": 23,
+  "t": 7.9,
+  "recuperada": false,
+  "expr": "eml(eml((0.49498 + (0.17465 * x)), eml((3.5506 + (-2.7891 * x)), (0.081261 + (-0.07774 * x)))), (3.0151 + (1.4286 * x)))"
+ },
+ {
+  "target": "nguyen5",
+  "config": "eml_puro",
+  "seed": 2,
+  "mse": 0.006935008801519871,
+  "nodos": 95,
+  "t": 9.6,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.36807 + (0.024301 * x)), (1.0802 + (-0.16392 * x))), eml((0.2286 + (-1.0487 * x)), (0.33736 + (0.13586 * x)))), eml(eml((0.6176 + (1.4699 * "
+ },
+ {
+  "target": "nguyen5",
+  "config": "eml_puro",
+  "seed": 3,
+  "mse": 0.0029120799154043198,
+  "nodos": 95,
+  "t": 4.8,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.3791 + (-0.66622 * x)), (-1.8876 + (0.88793 * x))), eml((0.20567 + (-0.34049 * x)), (-1.0226 + (0.019981 * x)))), eml(eml((0.27793 + (1.1911"
+ },
+ {
+  "target": "nguyen5",
+  "config": "eml_puro",
+  "seed": 4,
+  "mse": 0.0007915600435808301,
+  "nodos": 95,
+  "t": 3.3,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-1.3734 + (0.8526 * x)), (1.5193 + (0.25 * x))), eml((1.163 + (0.022206 * x)), (-0.0054491 + (-0.52967 * x)))), eml(eml((-1.336 + (1.2449 * x))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo",
+  "seed": 0,
+  "mse": 1.868648490541895e-15,
+  "nodos": 9,
+  "t": 41.5,
+  "recuperada": true,
+  "expr": "(sin(x) + sin(((x * x) + x)))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo",
+  "seed": 1,
+  "mse": 1.868648490541895e-15,
+  "nodos": 10,
+  "t": 41.1,
+  "recuperada": true,
+  "expr": "(sin(x) - sin(-((x + (x * x)))))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo",
+  "seed": 2,
+  "mse": 1.868648490541895e-15,
+  "nodos": 9,
+  "t": 43.2,
+  "recuperada": true,
+  "expr": "(sin(((x * x) + x)) + sin(x))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo",
+  "seed": 3,
+  "mse": 1.868648490541895e-15,
+  "nodos": 9,
+  "t": 39.1,
+  "recuperada": true,
+  "expr": "(sin(x) + sin((x + (x * x))))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo",
+  "seed": 4,
+  "mse": 1.868648490541895e-15,
+  "nodos": 9,
+  "t": 43.8,
+  "recuperada": true,
+  "expr": "(sin((x + (x * x))) + sin(x))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo+eml",
+  "seed": 0,
+  "mse": 1.868648490541895e-15,
+  "nodos": 9,
+  "t": 41.4,
+  "recuperada": true,
+  "expr": "(sin(x) + sin(((x * x) + x)))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo+eml",
+  "seed": 1,
+  "mse": 1.868648490541895e-15,
+  "nodos": 9,
+  "t": 42.3,
+  "recuperada": true,
+  "expr": "(sin(x) + sin((x + (x * x))))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo+eml",
+  "seed": 2,
+  "mse": 0.06364993751049042,
+  "nodos": 10,
+  "t": 45.2,
+  "recuperada": false,
+  "expr": "((1.2117 * sin((x + x))) + (x ^ 1.2222))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo+eml",
+  "seed": 3,
+  "mse": 0.0027403677813708782,
+  "nodos": 10,
+  "t": 44.6,
+  "recuperada": false,
+  "expr": "(((0.54069 + x) - -1.7145) * (x * cos(x)))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "catalogo+eml",
+  "seed": 4,
+  "mse": 0.0011412403546273708,
+  "nodos": 11,
+  "t": 43.2,
+  "recuperada": false,
+  "expr": "(x - sin(sin(-(((x * x) + sin(x))))))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "eml_puro",
+  "seed": 0,
+  "mse": 0.017740663141012192,
+  "nodos": 47,
+  "t": 6.8,
+  "recuperada": false,
+  "expr": "eml((-1.3333 + (1.4286 * x)), eml((-0.55556 + (0.3933 * x)), eml((-0.43763 + (-0.57308 * x)), eml(eml(eml((0.72727 + (-0.42857 * x)), (1.0833 + (0.83333 * x))),"
+ },
+ {
+  "target": "nguyen6",
+  "config": "eml_puro",
+  "seed": 1,
+  "mse": 0.008221223950386047,
+  "nodos": 23,
+  "t": 6.7,
+  "recuperada": false,
+  "expr": "eml((0.52675 + (0.48236 * x)), eml((0.77778 + (-0.8 * x)), eml((-2.1464 + (-1.4047 * x)), (-1.0629 + (0.38814 * x)))))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "eml_puro",
+  "seed": 2,
+  "mse": 0.020829185843467712,
+  "nodos": 11,
+  "t": 5.5,
+  "recuperada": false,
+  "expr": "eml((0.42113 + (0.75316 * x)), (4.3636 + (-1.6491 * x)))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "eml_puro",
+  "seed": 3,
+  "mse": 0.02061113715171814,
+  "nodos": 11,
+  "t": 4.4,
+  "recuperada": false,
+  "expr": "eml((0.43244 + (0.71376 * x)), (4.4054 + (-1.9167 * x)))"
+ },
+ {
+  "target": "nguyen6",
+  "config": "eml_puro",
+  "seed": 4,
+  "mse": 0.020357245579361916,
+  "nodos": 11,
+  "t": 5.0,
+  "recuperada": false,
+  "expr": "eml((0.48386 + (0.71741 * x)), (-4.7778 + (1.7887 * x)))"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo",
+  "seed": 0,
+  "mse": 0.0013143203686922789,
+  "nodos": 4,
+  "t": 41.4,
+  "recuperada": false,
+  "expr": "(sqrt(|-1.8952) * x)"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo",
+  "seed": 1,
+  "mse": 0.0013143203686922789,
+  "nodos": 3,
+  "t": 42.1,
+  "recuperada": false,
+  "expr": "(1.3766 * x)"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo",
+  "seed": 2,
+  "mse": 0.0013143203686922789,
+  "nodos": 3,
+  "t": 41.2,
+  "recuperada": false,
+  "expr": "(x * 1.3766)"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo",
+  "seed": 3,
+  "mse": 0.0013143203686922789,
+  "nodos": 3,
+  "t": 41.6,
+  "recuperada": false,
+  "expr": "(1.3766 * x)"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo",
+  "seed": 4,
+  "mse": 0.0013143203686922789,
+  "nodos": 3,
+  "t": 41.6,
+  "recuperada": false,
+  "expr": "(1.3766 * x)"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo+eml",
+  "seed": 0,
+  "mse": 0.0013143204851076007,
+  "nodos": 5,
+  "t": 40.2,
+  "recuperada": false,
+  "expr": "(x + (x * 0.37665))"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo+eml",
+  "seed": 1,
+  "mse": 0.0013143203686922789,
+  "nodos": 3,
+  "t": 41.6,
+  "recuperada": false,
+  "expr": "(1.3766 * x)"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo+eml",
+  "seed": 2,
+  "mse": 0.0013143207179382443,
+  "nodos": 6,
+  "t": 42.0,
+  "recuperada": false,
+  "expr": "sqrt(|(1.8952 * (x * x)))"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo+eml",
+  "seed": 3,
+  "mse": 0.0013143203686922789,
+  "nodos": 3,
+  "t": 40.1,
+  "recuperada": false,
+  "expr": "(1.3766 * x)"
+ },
+ {
+  "target": "nguyen7",
+  "config": "catalogo+eml",
+  "seed": 4,
+  "mse": 0.0013143203686922789,
+  "nodos": 3,
+  "t": 41.0,
+  "recuperada": false,
+  "expr": "(x * 1.3766)"
+ },
+ {
+  "target": "nguyen7",
+  "config": "eml_puro",
+  "seed": 0,
+  "mse": 0.0011067346204072237,
+  "nodos": 95,
+  "t": 4.8,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.92836 + (0.1933 * x)), (1.4567 + (0.47203 * x))), eml((1.3752 + (-0.67546 * x)), (-1.1327 + (0.22222 * x)))), eml(eml((-1.5865 + (-0.72204 *"
+ },
+ {
+  "target": "nguyen7",
+  "config": "eml_puro",
+  "seed": 1,
+  "mse": 0.052049390971660614,
+  "nodos": 95,
+  "t": 5.5,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.8097 + (-0.65889 * x)), (1.1185 + (1.2117 * x))), eml((-1.3828 + (0.67353 * x)), (0.37951 + (0.44154 * x)))), eml(eml((-1.3 + (0.72295 * x))"
+ },
+ {
+  "target": "nguyen7",
+  "config": "eml_puro",
+  "seed": 2,
+  "mse": 1517.704833984375,
+  "nodos": 95,
+  "t": 4.3,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.36364 + (-0.42331 * x)), (1.1058 + (-0.083333 * x))), eml((0.099096 + (0 * x)), (-0.8 + (-0.47481 * x)))), eml(eml((0.69321 + (0.125 * x)), "
+ },
+ {
+  "target": "nguyen7",
+  "config": "eml_puro",
+  "seed": 3,
+  "mse": 0.0017829081043601036,
+  "nodos": 95,
+  "t": 5.0,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.77338 + (-1.7533 * x)), (-1.4275 + (-0.25 * x))), eml((0.30895 + (1.0833 * x)), (-1.2793 + (0.78834 * x)))), eml(eml((-2 + (0.91667 * x)), ("
+ },
+ {
+  "target": "nguyen7",
+  "config": "eml_puro",
+  "seed": 4,
+  "mse": 0.007989492267370224,
+  "nodos": 95,
+  "t": 4.2,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.061857 + (-0.32542 * x)), (-1.0393 + (-0.075962 * x))), eml((0.90444 + (-0.33785 * x)), (0.61777 + (0.19217 * x)))), eml(eml((0.3276 + (-0.4"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo",
+  "seed": 0,
+  "mse": 0.0063008833676576614,
+  "nodos": 6,
+  "t": 26.4,
+  "recuperada": false,
+  "expr": "log(|-(sqrt(|cos(sin(x))))|+eps)"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo",
+  "seed": 1,
+  "mse": 0.006409193854779005,
+  "nodos": 5,
+  "t": 24.0,
+  "recuperada": false,
+  "expr": "((x * -0.19738) * x)"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo",
+  "seed": 2,
+  "mse": 0.0063008833676576614,
+  "nodos": 5,
+  "t": 28.3,
+  "recuperada": false,
+  "expr": "log(|sqrt(|cos(sin(x)))|+eps)"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo",
+  "seed": 3,
+  "mse": 0.006409193854779005,
+  "nodos": 5,
+  "t": 25.5,
+  "recuperada": false,
+  "expr": "((x * -0.19738) * x)"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo",
+  "seed": 4,
+  "mse": 0.0063008833676576614,
+  "nodos": 5,
+  "t": 31.3,
+  "recuperada": false,
+  "expr": "log(|sqrt(|cos(sin(x)))|+eps)"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo+eml",
+  "seed": 0,
+  "mse": 0.0063008833676576614,
+  "nodos": 5,
+  "t": 30.1,
+  "recuperada": false,
+  "expr": "log(|sqrt(|cos(sin(x)))|+eps)"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo+eml",
+  "seed": 1,
+  "mse": 0.006468428298830986,
+  "nodos": 5,
+  "t": 27.1,
+  "recuperada": false,
+  "expr": "log(|cos((x * -0.61102))|+eps)"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo+eml",
+  "seed": 2,
+  "mse": 0.006409193854779005,
+  "nodos": 5,
+  "t": 26.1,
+  "recuperada": false,
+  "expr": "(x * (x * -0.19738))"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo+eml",
+  "seed": 3,
+  "mse": 0.007658785209059715,
+  "nodos": 4,
+  "t": 25.6,
+  "recuperada": false,
+  "expr": "(-0.14106 * abs(x))"
+ },
+ {
+  "target": "keijzer1",
+  "config": "catalogo+eml",
+  "seed": 4,
+  "mse": 0.0063008833676576614,
+  "nodos": 5,
+  "t": 32.3,
+  "recuperada": false,
+  "expr": "log(|sqrt(|cos(sin(x)))|+eps)"
+ },
+ {
+  "target": "keijzer1",
+  "config": "eml_puro",
+  "seed": 0,
+  "mse": 0.0036740629002451897,
+  "nodos": 95,
+  "t": 4.3,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.79497 + (0.28293 * x)), (1.3528 + (0.50205 * x))), eml((1.2576 + (-0.73811 * x)), (-1.2743 + (0.15064 * x)))), eml(eml((-1.4221 + (-0.79548 "
+ },
+ {
+  "target": "keijzer1",
+  "config": "eml_puro",
+  "seed": 1,
+  "mse": 2679.284912109375,
+  "nodos": 95,
+  "t": 7.5,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.8 + (0.64899 * x)), (1.5556 + (1.0833 * x))), eml((0.98305 + (-1.2312 * x)), (-0.47247 + (-0.33333 * x)))), eml(eml((-0.66667 + (1.0693 * x)"
+ },
+ {
+  "target": "keijzer1",
+  "config": "eml_puro",
+  "seed": 2,
+  "mse": 0.0030949455685913563,
+  "nodos": 95,
+  "t": 2.9,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.30385 + (0.39617 * x)), (1.3927 + (-0.088857 * x))), eml((0.1 + (-0.79371 * x)), (-0.52545 + (0.10833 * x)))), eml(eml((0.73426 + (0.86572 *"
+ },
+ {
+  "target": "keijzer1",
+  "config": "eml_puro",
+  "seed": 3,
+  "mse": 0.016828278079628944,
+  "nodos": 95,
+  "t": 3.3,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.73751 + (0.28393 * x)), (-1.1058 + (-0.22222 * x))), eml((1.1092 + (-0.077962 * x)), (0.125 + (1.4905 * x)))), eml(eml((-0.78481 + (0.27606 "
+ },
+ {
+  "target": "keijzer1",
+  "config": "eml_puro",
+  "seed": 4,
+  "mse": 0.005672516766935587,
+  "nodos": 95,
+  "t": 3.3,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-1.32 + (0.80489 * x)), (1.6088 + (-0.44171 * x))), eml((1.0076 + (0.27049 * x)), (-0.85714 + (-0.72334 * x)))), eml(eml((-2.0368 + (0.8774 * x"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo",
+  "seed": 0,
+  "mse": 0.0006289749289862812,
+  "nodos": 5,
+  "t": 36.3,
+  "recuperada": false,
+  "expr": "(0.43403 * cos(sqrt(|x)))"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo",
+  "seed": 1,
+  "mse": 0.0006289749289862812,
+  "nodos": 5,
+  "t": 35.8,
+  "recuperada": false,
+  "expr": "(0.43403 * cos(sqrt(|x)))"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo",
+  "seed": 2,
+  "mse": 0.0006289749289862812,
+  "nodos": 6,
+  "t": 37.2,
+  "recuperada": false,
+  "expr": "(cos(sqrt(|x)) * sqrt(|-0.18839))"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo",
+  "seed": 3,
+  "mse": 0.0006289749289862812,
+  "nodos": 5,
+  "t": 37.4,
+  "recuperada": false,
+  "expr": "(cos(sqrt(|x)) * 0.43403)"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo",
+  "seed": 4,
+  "mse": 0.0006289749289862812,
+  "nodos": 5,
+  "t": 38.5,
+  "recuperada": false,
+  "expr": "(cos(sqrt(|x)) / 2.304)"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo+eml",
+  "seed": 0,
+  "mse": 0.0006289749289862812,
+  "nodos": 5,
+  "t": 36.4,
+  "recuperada": false,
+  "expr": "(0.43403 * cos(sqrt(|x)))"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo+eml",
+  "seed": 1,
+  "mse": 0.000865232665091753,
+  "nodos": 6,
+  "t": 40.4,
+  "recuperada": false,
+  "expr": "(0.6809 / eml(abs(x), 0.632))"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo+eml",
+  "seed": 2,
+  "mse": 6.77012576488778e-05,
+  "nodos": 8,
+  "t": 37.3,
+  "recuperada": false,
+  "expr": "(-0.63524 * log(|cos(cos((-0.59257 * x)))|+eps))"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo+eml",
+  "seed": 3,
+  "mse": 0.0006289749289862812,
+  "nodos": 5,
+  "t": 39.0,
+  "recuperada": false,
+  "expr": "(0.43403 * cos(sqrt(|x)))"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "catalogo+eml",
+  "seed": 4,
+  "mse": 0.0010291914222761989,
+  "nodos": 7,
+  "t": 39.4,
+  "recuperada": false,
+  "expr": "cos(sqrt(|(0.83417 - -(sqrt(|x)))))"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "eml_puro",
+  "seed": 0,
+  "mse": 0.9311251044273376,
+  "nodos": 95,
+  "t": 3.1,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-1.2727 + (-0.084662 * x)), (1.4823 + (0.083333 * x))), eml((1.4 + (-0.96913 * x)), (-1.1766 + (0.24046 * x)))), eml(eml((-1.8 + (-0.6 * x)), ("
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "eml_puro",
+  "seed": 1,
+  "mse": 0.0002913658390752971,
+  "nodos": 29,
+  "t": 6.8,
+  "recuperada": false,
+  "expr": "eml(eml((-1.0892 + (0.85391 * x)), eml(eml((-0.375 + (1.0551 * x)), (-0.52536 + (-0.20038 * x))), (-1.295 + (-0.84535 * x)))), (1.0013 + (-0.010082 * x)))"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "eml_puro",
+  "seed": 2,
+  "mse": 0.5623435378074646,
+  "nodos": 95,
+  "t": 3.3,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.7 + (-0.125 * x)), (-1.6314 + (0.22222 * x))), eml((0.29497 + (-0.26346 * x)), (0.72727 + (0.0072872 * x)))), eml(eml((1.0285 + (0.22222 * x"
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "eml_puro",
+  "seed": 3,
+  "mse": 0.003423969494178891,
+  "nodos": 53,
+  "t": 8.3,
+  "recuperada": false,
+  "expr": "eml((-0.75 + (0.10583 * x)), eml((0.625 + (-0.28465 * x)), eml((1.171 + (-0.57278 * x)), eml((-0.4275 + (0.23525 * x)), eml(eml(eml((-0.42331 + (0.24576 * x)), "
+ },
+ {
+  "target": "feyn_gauss",
+  "config": "eml_puro",
+  "seed": 4,
+  "mse": 0.7048030495643616,
+  "nodos": 95,
+  "t": 2.7,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-2.2 + (-0.58333 * x)), (-0.91667 + (0.125 * x))), eml((0.9655 + (0.64749 * x)), (-1.3467 + (-0.28023 * x)))), eml(eml((0.99416 + (-0.23525 * x"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo",
+  "seed": 0,
+  "mse": 0.0010662819258868694,
+  "nodos": 8,
+  "t": 45.8,
+  "recuperada": false,
+  "expr": "(abs(x) * (-(0.46146) + sqrt(|x)))"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo",
+  "seed": 1,
+  "mse": 1.2284783108308661e-14,
+  "nodos": 6,
+  "t": 44.3,
+  "recuperada": true,
+  "expr": "(x * (sin(2.618) * x))"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo",
+  "seed": 2,
+  "mse": 0.0,
+  "nodos": 5,
+  "t": 43.1,
+  "recuperada": true,
+  "expr": "(x * (x * 0.5))"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo",
+  "seed": 3,
+  "mse": 2.0861892095281383e-15,
+  "nodos": 6,
+  "t": 45.3,
+  "recuperada": true,
+  "expr": "abs((x / (-2 / x)))"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo",
+  "seed": 4,
+  "mse": 1.2284783108308661e-14,
+  "nodos": 7,
+  "t": 43.8,
+  "recuperada": true,
+  "expr": "abs(((cos(-2.0944) * x) * x))"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo+eml",
+  "seed": 0,
+  "mse": 0.0,
+  "nodos": 5,
+  "t": 43.4,
+  "recuperada": true,
+  "expr": "(x * (0.5 * x))"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo+eml",
+  "seed": 1,
+  "mse": 0.0,
+  "nodos": 5,
+  "t": 43.6,
+  "recuperada": true,
+  "expr": "((x * x) * 0.5)"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo+eml",
+  "seed": 2,
+  "mse": 0.0,
+  "nodos": 5,
+  "t": 43.0,
+  "recuperada": true,
+  "expr": "((0.5 * x) * x)"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo+eml",
+  "seed": 3,
+  "mse": 0.0,
+  "nodos": 5,
+  "t": 45.4,
+  "recuperada": true,
+  "expr": "((x / 2) * x)"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "catalogo+eml",
+  "seed": 4,
+  "mse": 0.0,
+  "nodos": 5,
+  "t": 43.5,
+  "recuperada": true,
+  "expr": "((x * x) * 0.5)"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "eml_puro",
+  "seed": 0,
+  "mse": 0.3643455505371094,
+  "nodos": 95,
+  "t": 3.3,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-1.5965 + (0.030061 * x)), (1.2072 + (-0.044308 * x))), eml((0.84229 + (-1.2456 * x)), (-0.49608 + (0.13931 * x)))), eml(eml((-0.54627 + (-0.59"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "eml_puro",
+  "seed": 1,
+  "mse": 0.8729003071784973,
+  "nodos": 95,
+  "t": 3.6,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((0.038853 + (0.14286 * x)), (-1.4167 + (-0.35544 * x))), eml((2.0708 + (0.25 * x)), (0.5708 + (0.52212 * x)))), eml(eml((1.9588 + (-0.36699 * x)"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "eml_puro",
+  "seed": 2,
+  "mse": 0.005274324212223291,
+  "nodos": 23,
+  "t": 6.0,
+  "recuperada": false,
+  "expr": "eml((-0.11111 + (-0.82678 * x)), eml((1.3108 + (-0.68689 * x)), eml((0.083333 + (-1.5055 * x)), (0.0539 + (0.030943 * x)))))"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "eml_puro",
+  "seed": 3,
+  "mse": 0.0006843759911134839,
+  "nodos": 221,
+  "t": 15.5,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-4.5 + (-0.25 * x)), (2.1781 + (-0.214 * x))), eml(eml(eml((-0.027632 + (1.331 * x)), (0.12073 + (1.119 * x))), eml(eml((0.28439 + (1.0535 * x)"
+ },
+ {
+  "target": "feyn_edens",
+  "config": "eml_puro",
+  "seed": 4,
+  "mse": 0.05962726101279259,
+  "nodos": 95,
+  "t": 2.4,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.91534 + (-0.28571 * x)), (-1.5455 + (-0.12348 * x))), eml((1.295 + (-0.2 * x)), (0.78834 + (0.375 * x)))), eml(eml((1.75 + (-0.57644 * x)), "
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo",
+  "seed": 0,
+  "mse": 0.008175921626389027,
+  "nodos": 7,
+  "t": 42.1,
+  "recuperada": false,
+  "expr": "(sqrt(|(4.554 * x)) ^ abs(x))"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo",
+  "seed": 1,
+  "mse": 0.0003013676032423973,
+  "nodos": 14,
+  "t": 44.4,
+  "recuperada": false,
+  "expr": "sqrt(|(sin(cos(x)) ^ ((abs(x) * abs(x)) * (-0.88362 - 2.8119))))"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo",
+  "seed": 2,
+  "mse": 0.010992705821990967,
+  "nodos": 5,
+  "t": 42.1,
+  "recuperada": false,
+  "expr": "(0.97681 + (x * x))"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo",
+  "seed": 3,
+  "mse": 0.004087924025952816,
+  "nodos": 5,
+  "t": 40.6,
+  "recuperada": false,
+  "expr": "(sqrt(|cos(x)) ^ -2.941)"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo",
+  "seed": 4,
+  "mse": 0.00033741179504431784,
+  "nodos": 9,
+  "t": 42.6,
+  "recuperada": false,
+  "expr": "(cos(x) ^ -(sqrt(|log(|log(|sqrt(|x)|+eps)|+eps))))"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo+eml",
+  "seed": 0,
+  "mse": 6.597389074158855e-06,
+  "nodos": 6,
+  "t": 46.0,
+  "recuperada": false,
+  "expr": "(cos((x * -1.6049)) ^ -0.40296)"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo+eml",
+  "seed": 1,
+  "mse": 0.004087922628968954,
+  "nodos": 4,
+  "t": 43.5,
+  "recuperada": false,
+  "expr": "(cos(x) ^ -1.4705)"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo+eml",
+  "seed": 2,
+  "mse": 0.004087924491614103,
+  "nodos": 5,
+  "t": 44.2,
+  "recuperada": false,
+  "expr": "(sqrt(|cos(x)) ^ -2.941)"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo+eml",
+  "seed": 3,
+  "mse": 0.004087920766323805,
+  "nodos": 4,
+  "t": 42.2,
+  "recuperada": false,
+  "expr": "(cos(x) ^ -1.4705)"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "catalogo+eml",
+  "seed": 4,
+  "mse": 0.003064151853322983,
+  "nodos": 9,
+  "t": 45.2,
+  "recuperada": false,
+  "expr": "eml(abs(log(|cos(x)|+eps)), cos((x * x)))"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "eml_puro",
+  "seed": 0,
+  "mse": 0.4209824204444885,
+  "nodos": 269,
+  "t": 17.1,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-3.2222 + (0.27273 * x)), (4.5455 + (0.18182 * x))), eml(eml(eml(eml((0.2 + (1.1429 * x)), (-0.11111 + (1 * x))), eml((-2.4286 + (0.375 * x)), "
+ },
+ {
+  "target": "feyn_rel",
+  "config": "eml_puro",
+  "seed": 1,
+  "mse": 0.000854825193528086,
+  "nodos": 95,
+  "t": 3.5,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-1.4976 + (-0.54823 * x)), (-1.0111 + (0.58904 * x))), eml((0.88946 + (0.69714 * x)), (0.34414 + (-1.0603 * x)))), eml(eml((-0.74747 + (-0.0883"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "eml_puro",
+  "seed": 2,
+  "mse": 0.0001637813402339816,
+  "nodos": 47,
+  "t": 6.0,
+  "recuperada": false,
+  "expr": "eml((-1.9091 + (1.0884 * x)), eml(eml(eml((-0.28746 + (0.91737 * x)), (3.5162 + (0.39257 * x))), eml(eml((0.82356 + (-0.04376 * x)), eml((0.66511 + (1.3287 * x)"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "eml_puro",
+  "seed": 3,
+  "mse": 0.03810524567961693,
+  "nodos": 95,
+  "t": 3.5,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.88478 + (0.32184 * x)), (-1.4333 + (0.42505 * x))), eml((0.51346 + (0.48195 * x)), (-0.26144 + (-0.74891 * x)))), eml(eml((0.37043 + (0.1335"
+ },
+ {
+  "target": "feyn_rel",
+  "config": "eml_puro",
+  "seed": 4,
+  "mse": 0.04781389236450195,
+  "nodos": 95,
+  "t": 3.1,
+  "recuperada": false,
+  "expr": "eml(eml(eml(eml((-0.18271 + (0.22815 * x)), (1.3489 + (0.61052 * x))), eml((0.61043 + (0.36152 * x)), (-1.941 + (-0.89952 * x)))), eml(eml((1.1253 + (-0.69346 *"
+ }
+]

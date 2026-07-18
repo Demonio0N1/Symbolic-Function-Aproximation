@@ -423,3 +423,22 @@ Flags (primera celda):
     (estructura fija, se compila una vez).
 - EML_SYMPY_EXPAND: to_sympy() muestra eml expandido a exp/ln (forma
   evaluable, usada por el test de ida y vuelta) o compacto eml(u,v).
+
+-----------------------------------------------------------
+12. VALIDACIÓN CIENTÍFICA (Fase 5)
+-----------------------------------------------------------
+
+- Soporte MULTIVARIABLE (Fase 5.2): FloatInput(idx) lee la columna idx de
+  una X de forma (n, n_vars); el caso univariable clásico queda intacto.
+  to_sympy devuelve una lista de símbolos [x, x1, ...] cuando hay varias
+  variables y el test de ida y vuelta evalúa en una malla aleatoria.
+- Suite de benchmarks (benchmarks.py, resultados en BENCHMARKS.md):
+  8 objetivos (propio, Nguyen 5/6/7, Keijzer-1 y 3 Feynman de 1 variable)
+  x 3 configuraciones x 5 semillas en la RTX 4090. Resumen:
+  * catalogo clásico: mejor tasa de recuperación exacta (propia 4/5,
+    nguyen6 5/5, feyn_edens 4/5) y MSE mediana <= 6e-3 en el resto.
+  * catalogo+eml: gana en objetivos afines a exp/ln (feyn_edens 5/5)
+    pero añade espacio de búsqueda que penaliza objetivos no-eml.
+  * eml puro: nunca recupera exacto (consistente con el paper: optimizar
+    composiciones eml profundas es difícil), aunque es el más rápido en
+    objetivos suaves (4-7 s) y logra MSE ~1e-2-1e-3 en varios.
