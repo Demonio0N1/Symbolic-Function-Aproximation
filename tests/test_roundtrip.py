@@ -82,4 +82,4 @@ def test_texto_prefijo_no_corrompe(eng):
     f_sym, xs = eng.to_sympy(e)
     import sympy as sp
 
-    assert sp.simplify(f_sym - (xs + 1.0) ** 2.0) == 0
+    assert sp.simplify(f_sym - (xs + 1) ** 2) == 0

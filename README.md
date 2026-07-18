@@ -352,3 +352,46 @@ Evaluado y descartado con datos (2.3):
 - TF32 activado por defecto (inocuo: no hay matmuls en la evaluación).
 - float64: solo x1,26 más lento (ops limitadas por ancho de banda);
   el flag DTYPE="float64" queda disponible si se necesita precisión.
+
+-----------------------------------------------------------
+10. CALIDAD DE BÚSQUEDA (Fase 3)
+-----------------------------------------------------------
+
+Mejoras del proceso de búsqueda (flags en la primera celda y en la
+celda de hiperparámetros de la demo):
+
+- SELECTION="nsga2": selección multi-objetivo NSGA-II sobre
+  (precisión, complejidad) como alternativa a mse + alpha*n_nodos.
+  evolve() adjunta el frente completo en hof.pareto: lista de
+  (mse, n_nodos, expresión) no dominadas.
+- VAL_FRACTION: split train/validación interno; la evolución solo ve
+  train y el mejor final se elige por MSE de validación (hof.val_mse).
+- RESTART_PATIENCE / EARLY_STOP_PATIENCE: reinicio con diversidad
+  fresca preservando el elite tras N generaciones sin mejora del mejor
+  histórico (datos completos), y parada temprana si el estancamiento
+  persiste.
+- AOS_XOVER_REWARD: el crossover también recibe recompensa AOS (se
+  acreditan los operadores del subárbol donado); antes no se
+  actualizaba nada. AOS_REWARD_NORM normaliza todas las recompensas por
+  la varianza de Y (invariante a la escala del problema).
+- RECOGNIZE_CONSTS: tras el fine-tuning, redondeo de casi-enteros y
+  sympy.nsimplify (pi, E, fracciones simples) aceptando cada
+  sustitución solo si el fitness no empeora (2.9999*sin(x) -> 3*sin(x)).
+- ISLANDS / evolve_islands(): varias poblaciones en la misma GPU con
+  migración periódica en anillo; con la GPU liberada por la Fase 2
+  también puede subirse POP directamente.
+
+Validación de la Fase 3 (RTX 4090, caso 2x^3+3sin(x)+1, 5 semillas,
+recuperación exacta = MSE < 1e-6 tras fine-tuning + reconocimiento de
+constantes; presupuesto de tiempo comparable):
+
+| Configuración                              | Recuperación | Tiempo medio |
+|--------------------------------------------|:------------:|-------------:|
+| Original (Fase 1, POP=160, GEN=1000)       |     2/5      |      ~440 s  |
+| Single + reinicios + val (GEN=1000)        |     1/5      |       304 s  |
+| POP=640, GEN=250                           |     2/5      |       133 s  |
+| 4 islas x 160, GEN=250, migración cada 50  |     5/5      |       120 s  |
+
+Las islas con migración son el nuevo default de la demo (ISLANDS=4,
+GEN=250): recuperan el caso de prueba en todas las semillas probadas con
+una cuarta parte del tiempo del original.
