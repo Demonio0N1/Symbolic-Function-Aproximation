@@ -41,16 +41,27 @@ def random_node(aos, max_depth=5):
 
 
 # ===== Macros de usuario =====
+def _var_azar():
+    # con varias variables, la macro elige una al azar (Fase 5.2)
+    return FloatInput(random.randrange(config.N_VARS)) if config.N_VARS > 1 else FloatInput()
+
+
 def macro_sin_lin():
-    # sin(a*x + b)
-    return Sin(Add(Mul(Constant(1.0), FloatInput()), Constant(0.0)))
+    # sin(a*xi + b)
+    return Sin(Add(Mul(Constant(1.0), _var_azar()), Constant(0.0)))
 
 
 def macro_ax_plus_b():
-    return Add(Mul(Constant(1.0), FloatInput()), Constant(0.0))
+    return Add(Mul(Constant(1.0), _var_azar()), Constant(0.0))
 
 
-USER_MACROS = [macro_sin_lin, macro_ax_plus_b]  # edita esta lista
+def macro_cuadrado():
+    # a*xi^2 (útil para sumas de cuadrados multivariables)
+    v = _var_azar()
+    return Mul(Constant(1.0), Mul(v, v.clone()))
+
+
+USER_MACROS = [macro_sin_lin, macro_ax_plus_b, macro_cuadrado]  # edita esta lista
 
 
 # ===== Mutación / crossover =====
@@ -101,10 +112,13 @@ def make_hint_tree():
                Mul(Constant(1.0), Sin(FloatInput())))
 
 
-def inject_hint_population(pop, fraction=0.3, jitter=0.2):
+def inject_hint_population(pop, fraction=0.3, jitter=0.2, tree=None):
+    """Siembra una fracción de la población con clones (con jitter en las
+    constantes) de una función 'pista': `tree` si se da, o make_hint_tree()."""
+    base = tree if tree is not None else make_hint_tree()
     n = max(1, int(len(pop)*fraction))
     for i in range(n):
-        clone = make_hint_tree().clone()
+        clone = base.clone()
         for node, _, _ in all_subnodes(clone):
             if isinstance(node, Constant):
                 node.value += np.random.uniform(-jitter, jitter)
@@ -333,7 +347,7 @@ def evolve(X, Y, cat_un, cat_bin, pop_size=160, generations=180, max_depth=5,
            elite=10, p_mut=0.6, p_xover=0.3, alpha=1e-3, verbose=True,
            aos_params=None,
            use_macros=True, p_macro=0.2,
-           use_hint=True, hint_fraction=0.3, hint_jitter=0.2,
+           use_hint=True, hint_fraction=0.3, hint_jitter=0.2, hint_tree=None,
            unary_priors=None, binary_priors=None,
            sample_schedule=None,
            curriculum=None,
@@ -403,7 +417,7 @@ def evolve(X, Y, cat_un, cat_bin, pop_size=160, generations=180, max_depth=5,
     else:
         pop = [random_node(aos, max_depth=max_depth)[0] for _ in range(pop_size)]
         if use_hint:
-            inject_hint_population(pop, fraction=hint_fraction, jitter=hint_jitter)
+            inject_hint_population(pop, fraction=hint_fraction, jitter=hint_jitter, tree=hint_tree)
 
     hof = HallOfFame(k=hof_k)
 
