@@ -55,6 +55,10 @@ minutos en una RTX 4090). `X` puede ser `(n,)` o `(n, n_vars)` (multivariable).
 # equivalente: uvicorn webapp.app:app --port 8000
 ```
 
+Guía de uso completa (pestañas de datos, parámetros, botones, API REST y
+solución de problemas): **[webapp/README.md](webapp/README.md)**. La propia
+página incluye además el panel «❓ Guía de parámetros» con diagramas.
+
 Corre en tu máquina y usa la GPU a través de `symreg`. Desde el navegador puedes:
 
 - elegir el objetivo: **preset** (los 8 benchmarks), **expresión** `y=f(x)`
