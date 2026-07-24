@@ -23,7 +23,7 @@ Tres pestañas:
 |---|---|
 | **Preset** | Los 8 objetivos de los benchmarks (propia, Nguyen 5/6/7, Keijzer-1 y 3 de Feynman). |
 | **Expresión** | Escribe la función objetivo a mano. Hasta **6 variables** (`x, y, z, u, v, w`, o `x1..x5`), potencias con `^` o `**`, funciones numpy (`sin, cos, exp, log, sqrt, abs, pi, e`…). Acepta forma de ecuación: `x^2 + y^2 = 0`, `f(x,y) = x*y`, o `izq = der` (se usa `izq − der`). Con varias variables el dominio se muestrea uniforme en `[x mín, x máx]` por dimensión. |
-| **CSV** | Tus propios datos, sin cabecera, columnas `x1[,x2,…],y` (la última columna es la salida). Multivariable automático. |
+| **CSV** | Tus propios datos, sin cabecera, columnas `x1[,x2,…],y` (la última columna es la salida). Multivariable automático. Hay tres archivos de prueba en [`ejemplos/`](../ejemplos): `univariable_ruido.csv` (0.5x²−2cos x+3 con ruido — prueba la validación), `dos_variables.csv` (x·y+sin x) y `tres_variables.csv` (x²+y²+z³ — actívale el fit inicial). |
 
 Extras: `puntos` (tamaño de la muestra), `ruido gaussiano σ` (para probar
 robustez) y `semilla` (reproducibilidad).
