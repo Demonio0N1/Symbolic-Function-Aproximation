@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>symreg — Regresión Simbólica en GPU</title>
+<style>
+  :root{
+    --bg:#0f1420; --panel:#1a2130; --panel2:#222b3d; --tx:#e8ecf3; --mut:#9aa7bd;
+    --acc:#4f8ef7; --ok:#3ecf8e; --err:#f76c6c; --bd:#2d3850;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+  header{padding:18px 28px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  header h1{margin:0;font-size:20px}
+  header .dev{color:var(--mut);font-size:13px}
+  main{max-width:1180px;margin:0 auto;padding:20px;display:grid;grid-template-columns:390px 1fr;gap:18px}
+  @media (max-width:900px){ main{grid-template-columns:1fr} }
+  .card{background:var(--panel);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+  .card h2{margin:0 0 12px;font-size:15px;color:var(--acc);text-transform:uppercase;letter-spacing:.06em}
+  label{display:block;font-size:12.5px;color:var(--mut);margin:8px 0 3px}
+  input,select{width:100%;padding:7px 9px;border-radius:8px;border:1px solid var(--bd);background:var(--panel2);color:var(--tx);font-size:14px}
+  input[type=checkbox]{width:auto}
+  .fila{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .fila3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .tabs{display:flex;gap:6px;margin-bottom:10px}
+  .tabs button{flex:1;padding:7px;border-radius:8px;border:1px solid var(--bd);background:var(--panel2);color:var(--mut);cursor:pointer}
+  .tabs button.act{background:var(--acc);color:#fff;border-color:var(--acc)}
+  .ops{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:4px}
+  .ops label{display:flex;align-items:center;gap:5px;margin:0;font-size:13px;color:var(--tx)}
+  .botones{display:flex;gap:10px;margin-top:14px}
+  .btn{flex:1;padding:11px;border:none;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer}
+  .btn-run{background:var(--ok);color:#08331f}
+  .btn-run:disabled{background:#2b3димение}
+  .btn-run:disabled{opacity:.45;cursor:not-allowed}
+  .btn-stop{background:var(--err);color:#3d0f0f}
+  .btn-stop:disabled{opacity:.45;cursor:not-allowed}
+  .btn-dl{background:var(--panel2);color:var(--tx);border:1px solid var(--bd);flex:none;padding:8px 14px;font-weight:500}
+  .barra{height:12px;background:var(--panel2);border-radius:6px;overflow:hidden;margin:8px 0}
+  .barra>div{height:100%;background:linear-gradient(90deg,var(--acc),var(--ok));width:0%;transition:width .4s}
+  .kv{display:flex;gap:16px;flex-wrap:wrap;color:var(--mut);font-size:13.5px}
+  .kv b{color:var(--tx)}
+  pre,code.blk{display:block;background:#0b0f18;border:1px solid var(--bd);border-radius:8px;padding:10px 12px;overflow-x:auto;font-size:13px;white-space:pre-wrap;word-break:break-all}
+  img.plot{max-width:100%;border-radius:8px;border:1px solid var(--bd);margin-top:8px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  th,td{padding:5px 8px;border-bottom:1px solid var(--bd);text-align:left}
+  th{color:var(--mut);font-weight:600}
+  td.num{font-variant-numeric:tabular-nums}
+  .err{color:var(--err)}
+  .ok{color:var(--ok)}
+  .oculto{display:none}
+  .pill{display:inline-block;background:var(--panel2);border:1px solid var(--bd);border-radius:99px;padding:2px 10px;font-size:12px;color:var(--mut)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧬 symreg — Regresión Simbólica Evolutiva</h1>
+  <div class="dev" id="dev">conectando…</div>
+</header>
+<main>
+  <!-- ==== columna izquierda: configuración ==== -->
+  <div>
+    <div class="card">
+      <h2>1 · Datos</h2>
+      <div class="tabs">
+        <button id="tab-preset" class="act" onclick="tab('preset')">Preset</button>
+        <button id="tab-expr" onclick="tab('expr')">Expresión</button>
+        <button id="tab-csv" onclick="tab('csv')">CSV</button>
+      </div>
+      <div id="pan-preset">
+        <label>Función objetivo</label>
+        <select id="preset"></select>
+      </div>
+      <div id="pan-expr" class="oculto">
+        <label>y = f(x) (numpy: sin, cos, exp, log, sqrt, abs, pi…)</label>
+        <input id="expr" value="2*x**3 + 3*sin(x) + 1">
+      </div>
+      <div id="pan-csv" class="oculto">
+        <label>Archivo CSV (columnas: x1[,x2,…], y — sin cabecera)</label>
+        <input type="file" id="csv" accept=".csv,text/csv">
+        <div id="csv-info" class="kv" style="margin-top:6px"></div>
+      </div>
+      <div class="fila3" id="rango">
+        <div><label>x mín</label><input id="lo" type="number" value="-5" step="0.5"></div>
+        <div><label>x máx</label><input id="hi" type="number" value="5" step="0.5"></div>
+        <div><label>puntos</label><input id="npts" type="number" value="400"></div>
+      </div>
+      <div class="fila">
+        <div><label>ruido gaussiano (σ)</label><input id="ruido" type="number" value="0" step="0.05"></div>
+        <div><label>semilla</label><input id="seed" type="number" value="2"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2 · Evolución</h2>
+      <div class="fila3">
+        <div><label>población/isla</label><input id="pop" type="number" value="160"></div>
+        <div><label>generaciones</label><input id="gen" type="number" value="250"></div>
+        <div><label>islas</label><input id="islas" type="number" value="4"></div>
+      </div>
+      <div class="fila3">
+        <div><label>profundidad</label><input id="depth" type="number" value="5"></div>
+        <div><label>alpha (complejidad)</label><input id="alpha" type="number" value="0.001" step="0.001"></div>
+        <div><label>reinicio (gens)</label><input id="restart" type="number" value="80"></div>
+      </div>
+      <div class="fila3">
+        <div><label>validación</label><input id="val" type="number" value="0.2" step="0.05" min="0" max="0.5"></div>
+        <div><label>selección</label>
+          <select id="selection"><option value="alpha">alpha·nodos</option><option value="nsga2">NSGA-II (Pareto)</option></select></div>
+        <div><label>modo EML</label>
+          <select id="eml"><option value="off">off</option><option value="operator">operador</option><option value="pure">puro</option></select></div>
+      </div>
+      <label>Operadores unarios</label>
+      <div class="ops" id="ops-un"></div>
+      <label>Operadores binarios</label>
+      <div class="ops" id="ops-bin"></div>
+      <div class="fila" style="margin-top:8px">
+        <label style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" id="ft" checked> fine-tuning (Adam)</label>
+        <label style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" id="rec" checked> reconocer constantes</label>
+      </div>
+      <div class="botones">
+        <button class="btn btn-run" id="btn-run" onclick="iniciar()">▶ Iniciar</button>
+        <button class="btn btn-stop" id="btn-stop" onclick="cancelar()" disabled>■ Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==== columna derecha: progreso y resultados ==== -->
+  <div>
+    <div class="card">
+      <h2>Progreso</h2>
+      <div class="barra"><div id="bar"></div></div>
+      <div class="kv">
+        <span>generación <b id="p-gen">–</b></span>
+        <span>mejor fitness <b id="p-fit">–</b></span>
+        <span>tiempo <b id="p-t">–</b></span>
+        <span id="p-msg" class="pill">esperando</span>
+      </div>
+      <div id="error" class="err oculto" style="margin-top:10px"><pre id="error-txt"></pre></div>
+    </div>
+
+    <div class="card oculto" id="card-res">
+      <h2>Resultado</h2>
+      <div class="kv" style="margin-bottom:8px">
+        <span>MSE <b id="r-mse">–</b></span>
+        <span>MSE validación <b id="r-val">–</b></span>
+        <span>nodos <b id="r-nodos">–</b></span>
+        <span>tiempo <b id="r-t">–</b></span>
+        <span>roundtrip SymPy <b id="r-rt">–</b></span>
+      </div>
+      <label>Expresión (motor)</label>
+      <code class="blk" id="r-expr"></code>
+      <label>SymPy</label>
+      <code class="blk" id="r-sympy"></code>
+      <label>LaTeX (copiable)</label>
+      <code class="blk" id="r-latex"></code>
+      <div class="botones" style="margin-top:10px">
+        <button class="btn btn-dl" onclick="location='/api/descargar/arbol'">⬇ árbol JSON</button>
+        <button class="btn btn-dl" onclick="location='/api/descargar/checkpoint'">⬇ checkpoint</button>
+      </div>
+      <img class="plot" id="r-img" alt="ajuste">
+      <img class="plot oculto" id="r-conv" alt="convergencia">
+      <div id="r-hof-wrap">
+        <h2 style="margin-top:16px">Hall of Fame</h2>
+        <table><thead><tr><th>fitness</th><th>expresión</th></tr></thead><tbody id="r-hof"></tbody></table>
+      </div>
+      <div id="r-pareto-wrap" class="oculto">
+        <h2 style="margin-top:16px">Frente de Pareto (precisión vs complejidad)</h2>
+        <table><thead><tr><th>MSE</th><th>nodos</th><th>expresión</th></tr></thead><tbody id="r-pareto"></tbody></table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const UN = ["sin","cos","log","sqrt","abs","neg","tan","tanh","sigmoid","asin","acos","atan","erf","erfc","gamma","j0","j1","chebyshevT","legendreP"];
+const UN_DEF = ["sin","cos","log","sqrt","abs","neg"];
+const BIN = ["add","sub","mul","div","pow","min","max","beta","eml"];
+const BIN_DEF = ["add","sub","mul","div","pow"];
+let fuente = "preset", timer = null;
+
+function chks(cont, lista, defs, pref){
+  $(cont).innerHTML = lista.map(o =>
+    `<label><input type="checkbox" id="${pref}-${o}" ${defs.includes(o)?"checked":""}>${o}</label>`).join("");
+}
+chks("ops-un", UN, UN_DEF, "un");
+chks("ops-bin", BIN, BIN_DEF, "bin");
+
+function tab(t){
+  fuente = t;
+  for (const x of ["preset","expr","csv"]) {
+    $("tab-"+x).classList.toggle("act", x===t);
+    $("pan-"+x).classList.toggle("oculto", x!==t);
+  }
+  $("rango").style.display = (t==="csv") ? "none" : "grid";
+}
+
+fetch("/api/info").then(r=>r.json()).then(d=>{
+  $("dev").textContent = `symreg ${d.version} · ${d.dispositivo}`;
+  $("preset").innerHTML = d.presets.map(p=>`<option>${p}</option>`).join("");
+});
+
+$("csv").addEventListener("change", async ev=>{
+  const f = ev.target.files[0]; if(!f) return;
+  const fd = new FormData(); fd.append("archivo", f);
+  const r = await fetch("/api/csv", {method:"POST", body:fd});
+  const d = await r.json();
+  $("csv-info").innerHTML = d.ok
+    ? `<span class="ok">✔ ${f.name}: ${d.filas} filas, ${d.variables} variable(s)</span>`
+    : `<span class="err">${d.error}</span>`;
+});
+
+function marcados(pref, lista){ return lista.filter(o=>$(`${pref}-${o}`).checked); }
+
+async function iniciar(){
+  const p = {
+    fuente, preset: $("preset").value, expr: $("expr").value,
+    lo:+$("lo").value, hi:+$("hi").value, npts:+$("npts").value,
+    ruido:+$("ruido").value, seed:+$("seed").value,
+    pop:+$("pop").value, gen:+$("gen").value, islas:+$("islas").value,
+    depth:+$("depth").value, alpha:+$("alpha").value,
+    restart_patience:+$("restart").value, val_fraction:+$("val").value,
+    selection:$("selection").value, eml_mode:$("eml").value,
+    unarios: marcados("un", UN), binarios: marcados("bin", BIN),
+    fine_tune:$("ft").checked, recognize:$("rec").checked,
+  };
+  const r = await fetch("/api/iniciar", {method:"POST",
+    headers:{"Content-Type":"application/json"}, body:JSON.stringify(p)});
+  if (!r.ok){ const d = await r.json(); alert(d.error||"error"); return; }
+  $("btn-run").disabled = true; $("btn-stop").disabled = false;
+  $("card-res").classList.add("oculto"); $("error").classList.add("oculto");
+  $("p-msg").textContent = "corriendo en GPU…";
+  timer = setInterval(poll, 1500);
+}
+
+async function cancelar(){
+  await fetch("/api/cancelar", {method:"POST"});
+  $("p-msg").textContent = "cancelando (espera al bloque actual)…";
+}
+
+async function poll(){
+  const d = await (await fetch("/api/estado")).json();
+  if (d.progreso){
+    const pr = d.progreso;
+    $("bar").style.width = (100*pr.gen/pr.total).toFixed(1)+"%";
+    $("p-gen").textContent = `${pr.gen}/${pr.total}`;
+    $("p-fit").textContent = Number(pr.best_fit).toExponential(3);
+    $("p-t").textContent = pr.elapsed+" s";
+  }
+  if (d.error){
+    clearInterval(timer);
+    $("error").classList.remove("oculto"); $("error-txt").textContent = d.error;
+    $("p-msg").textContent = "error";
+    $("btn-run").disabled = false; $("btn-stop").disabled = true;
+    return;
+  }
+  if (!d.corriendo && d.resultado){
+    clearInterval(timer);
+    mostrar(d.resultado);
+    $("btn-run").disabled = false; $("btn-stop").disabled = true;
+    $("p-msg").textContent = d.resultado.cancelada ? "cancelada (resultado parcial)" : "completada ✔";
+    $("bar").style.width = "100%";
+  }
+}
+
+function mostrar(r){
+  $("card-res").classList.remove("oculto");
+  $("r-mse").textContent = Number(r.mse).toExponential(3);
+  $("r-val").textContent = r.val_mse==null ? "–" : Number(r.val_mse).toExponential(3);
+  $("r-nodos").textContent = r.nodos;
+  $("r-t").textContent = r.tiempo+" s";
+  $("r-rt").textContent = r.roundtrip;
+  $("r-expr").textContent = r.expr;
+  $("r-sympy").textContent = r.sympy;
+  $("r-latex").textContent = r.latex;
+  $("r-img").src = "data:image/png;base64,"+r.img_ajuste;
+  if (r.img_convergencia){
+    $("r-conv").src = "data:image/png;base64,"+r.img_convergencia;
+    $("r-conv").classList.remove("oculto");
+  } else $("r-conv").classList.add("oculto");
+  $("r-hof").innerHTML = r.hof.map(h=>
+    `<tr><td class="num">${Number(h.fit).toExponential(3)}</td><td><code>${h.expr}</code></td></tr>`).join("");
+  if (r.pareto){
+    $("r-pareto-wrap").classList.remove("oculto");
+    $("r-pareto").innerHTML = r.pareto.map(p=>
+      `<tr><td class="num">${Number(p.mse).toExponential(3)}</td><td class="num">${p.nodos}</td><td><code>${p.expr}</code></td></tr>`).join("");
+  } else $("r-pareto-wrap").classList.add("oculto");
+}
+</script>
+</body>
+</html>

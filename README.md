@@ -39,6 +39,29 @@ El notebook `FunctionAprox_GPU_Symbolic_AOS_PLUS.ipynb` es una demo delgada de
 este flujo (con la configuración por defecto recupera el caso de prueba en ~2
 minutos en una RTX 4090). `X` puede ser `(n,)` o `(n, n_vars)` (multivariable).
 
+## Interfaz web local
+
+```bash
+./webapp/run.sh          # -> http://localhost:8000
+# equivalente: uvicorn webapp.app:app --port 8000
+```
+
+Corre en tu máquina y usa la GPU a través de `symreg`. Desde el navegador puedes:
+
+- elegir el objetivo: **preset** (los 8 benchmarks), **expresión** `y=f(x)`
+  escrita a mano (numpy) o **CSV** propio (multivariable: columnas `x1..xk, y`),
+  con ruido gaussiano opcional;
+- configurar población, generaciones, islas, profundidad, catálogo de
+  operadores (checkboxes), NSGA-II, validación, reinicios y modo EML;
+- seguir el **progreso en vivo** (barra, mejor fitness, convergencia) y
+  **cancelar** conservando el resultado parcial;
+- ver la expresión (motor, SymPy y LaTeX), MSE de train/validación, gráfica de
+  ajuste, Hall of Fame y frente de Pareto;
+- descargar el árbol JSON y el checkpoint de la corrida.
+
+Una corrida a la vez (la GPU es una); la evolución se ejecuta por bloques de
+generaciones, así que la cancelación tarda como mucho un bloque.
+
 ## Estructura del paquete
 
 | Módulo | Contenido |
