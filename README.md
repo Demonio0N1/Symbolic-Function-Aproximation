@@ -13,6 +13,15 @@ Adam y exportación a SymPy.
 ## Quickstart
 
 ```bash
+./setup.sh        # instalación automática: crea .venv, detecta GPU/CPU,
+                  # instala torch + dependencias y VERIFICA todo (imports,
+                  # CUDA, humo del motor y los 24 tests). Flags: --cpu,
+                  # --solo-verificar
+```
+
+o manualmente:
+
+```bash
 pip install -r requirements.txt   # torch con CUDA para GPU (opcional: funciona en CPU)
 ```
 
