@@ -21,11 +21,12 @@ la media, 0 = perfecto). Estados: ✅ exacta (NMSE < 1e-9), 🟢 muy buena (< 1e
 | Multivariable separable, hasta 5 variables (`x·x1+sin x`, `x²+x1²`, `x·x1·x2`, `x·x1+x2-x3²+sin x4`) | Cocientes con denominador compuesto (`(x+x1)/(1+x2²)`) |
 | Frecuencias hasta ~25 muestras por periodo (`sin 10x` con 400 puntos en [-5,5]) | Frecuencias con ≲ 5 muestras por periodo (`sin 50x`, `sin 200x` → devuelve 0) |
 | Pocos datos: 15 puntos bastan para `2x³+3sin x+1` | Constantes "feas" dentro de funciones (`1,7·sin(2,3x+0,4)+0,37x` → NMSE 0,06, 114 nodos) |
-| Ruido del 1 % (NMSE 8e-5, estructura reconocible) | Ruido ≥ 10 %: árboles de 390 nodos, 9 min, expresión ilegible; 50 %: > 25 min |
+| Ruido del 1 % (NMSE 8e-5, estructura reconocible) | Ruido ≥ 10 %: árboles de 390–616 nodos, 6–9 min, expresión ilegible; al 50 % sobreajusta el ruido |
 | Extrapolación cuando la forma es exacta | Extrapolación de ajustes aproximados (nguyen7: NMSE 1,3 fuera del rango) |
-|  | Escalas: `|Y| ~ 1e-4` → devuelve 0; `Y ~ 1e4` y `x ∈ [1000, 2000]` → no converge o NMSE 0,02 |
+|  | Escalas: `|Y| ~ 1e-4` → devuelve 0; `Y ~ 1e4` → 937 nodos sin la forma; `x ∈ [1000, 2000]` → NMSE 0,02 |
+|  | Árboles > 300 nodos: `sympy.simplify` y la derivada simbólica tardan > 50 min (bloqueo práctico) |
 
-## Los 10 límites, con causa y remedio
+## Los 11 límites, con causa y remedio
 
 ### 1. La penalización de complejidad es absoluta y domina cuando var(Y) es pequeña  ⟵ el más importante
 
@@ -54,9 +55,12 @@ Con `alpha` relativo a la varianza mejora mucho, a costa de árboles más grande
 |---|---:|---:|---:|
 | nguyen5 | 0,056 | 0,0022 | 5e-5 (36 nodos) |
 | nguyen7 | 0,002 | 0,002 | 2e-6 (48 nodos) |
-| keijzer1 | 0,52 | 8,6e-4 | > 60 min, sin terminar |
+| keijzer1 | 0,52 | 8,6e-4 | 2,4e-3 (373 nodos) |
 | feyn_gauss | 0,032 | 5,9e-4 | 4,3e-5 (77 nodos) |
 | feyn_rel | 0,044 | 3,4e-5 | 2,2e-4 (158 nodos) |
+
+Con `1e-6·var(Y)` la mejora numérica viene con árboles de 36–373 nodos (ilegibles);
+el punto dulce está entre `1e-5` y `1e-4·var(Y)`.
 
 **Remedio:** pasar `alpha = k·var(Y)` con `k ≈ 1e-5…1e-4` (parámetro ya existente de
 `evolve`/`evolve_islands`), o normalizar `Y` a varianza 1 antes y deshacer la
@@ -107,7 +111,9 @@ Nyquist sino la búsqueda: no hay gradiente útil hacia frecuencias altas.
 `2x³+3sin x+1` + ruido gaussiano (fracción de σ_Y): 0 % → 15 nodos, 91 s;
 1 % → 51 nodos, 267 s, NMSE 8e-5 (la estructura sigue visible:
 `x²(1,9999x+0,40)+2,93 sin x+…`); 10 % → **390 nodos, 554 s**, NMSE 0,008 (al
-nivel del ruido, pero expresión ilegible); 50 % → **no terminó en 25 min**. Causa:
+nivel del ruido, pero expresión ilegible); 50 % → **616 nodos, 383 s, NMSE 0,15 con
+sobreajuste** (MSE de entrenamiento 1637 por debajo de la varianza del ruido, 2210:
+el árbol memoriza ruido). Causa:
 `alpha=1e-3` es despreciable frente a `var(Y)=8840`, así que no hay presión de
 parsimonia y el tiempo por generación crece con el tamaño de los árboles.
 
@@ -119,7 +125,7 @@ relativo; o limitar `max_depth`.
 Las constantes nacen en U(-5, 5) y Adam (lr 5e-3, 250 pasos) solo las mueve un
 poco: `(x-100)²` en [98, 102] → NMSE 0,0019 y 28 nodos (nunca aparece el 100);
 `x²/1e6` en [1000, 2000] → NMSE 0,018 (además `pow` recorta la base a ±1e3);
-`1e4·x²+1e3` → no terminó en 25 min; `1e-4·sin x` → devuelve **0** porque un solo
+`1e4·x²+1e3` → **937 nodos**, 426 s, NMSE 2e-4 sin recuperar la forma; `1e-4·sin x` → devuelve **0** porque un solo
 nodo (1e-3) cuesta más que toda la señal (var = 5e-9). Constantes "feas" dentro de
 una función (`1,7·sin(2,3x+0,4)+0,37x`) → falla (NMSE 0,064, 114 nodos, 205 s);
 fuera de ella (`0,123x²-4,567x+0,89`) → NMSE 4,6e-6 pero con estructura incorrecta.
@@ -149,10 +155,31 @@ que en SymPy son `zoo`/0 (en `const_fea1` SymPy simplifica todo a `0`). Ocurre e
 árboles inflados (> 50 nodos). **Siempre** validar con `check_sympy_roundtrip`
 antes de usar la expresión fuera del motor.
 
+### 11. El post-proceso simbólico se bloquea con árboles grandes
+
+El pipeline del motor termina siempre: evolución + fine-tuning + reconocimiento de
+constantes tardó 309–426 s incluso con Hall of Fame de 350–1000 nodos (fine-tuning
+26–77 s, reconocimiento < 2 s). Lo que no termina es SymPy. Medido sobre el árbol
+de 353 nodos de keijzer1 (alpha = 1e-6·var):
+
+| operación | tiempo |
+|---|---:|
+| `to_sympy` | 0,6 s |
+| `str` / `sp.latex` | < 0,1 s |
+| `sp.nsimplify` (la webapp lo usa para el LaTeX) | 2,7 s |
+| `lambdify` + `check_sympy_roundtrip` | 0,5 s |
+| `safe_derivative` (`sp.diff` + `sp.simplify`) | **> 150 s, cortado** |
+| `sp.simplify` | **> 300 s, cortado** (en la batería, > 50 min) |
+
+**Remedio:** no llamar a `sp.simplify` sobre árboles crudos; usar `simplify_tree`
+del motor y `nsimplify`, y limitar el nº de nodos (o usar NSGA-II y elegir del
+frente de Pareto) antes de derivar o simplificar. La derivada con `USE_DERIV_LOSS`
+no se ve afectada porque usa autograd, no SymPy.
+
 ### Otros detalles medidos
 
 - **Tiempo (CPU, 4 núcleos):** mediana 90 s por corrida; 200–550 s si los árboles
-  superan ~100 nodos; 3 corridas superaron 25 min. Depende del tamaño de los
+  superan ~100 nodos; 5–7 min con 350–1000 nodos. Depende del tamaño de los
   árboles, no del nº de datos (15 puntos tardaron 259 s).
 - **Criterio "recuperada = MSE < 1e-6" de `BENCHMARKS.md` es absoluto:** da por
   recuperada la constante 0 para `1e-4·sin x` y una expresión de 77 nodos para
@@ -194,7 +221,7 @@ antes de usar la expresión fuera del motor.
 |---|---:|---:|---:|---|---:|---:|---|
 | nguyen5_alpha1e6 | 200 | 1 | 5e-05 | 🟢 muy buena | 36 | 116.9 | `-cos(sqrt(Abs(cos(4.1635594367981*sin(1.00592184066772*x**2 + cos(sqrt(Abs(sin(x` |
 | nguyen7_alpha1e6 | 200 | 1 | 2e-06 | 🟢 muy buena | 48 | 121.2 | `0.952101588249207*x*sqrt(Abs(0.352348566055298*sin(x + Abs(sqrt(x)*(sin(1.735286` |
-| keijzer1_alpha1e6 | 200 | 1 | – | ⏱ > 25 min sin terminar (bloat sin presión de parsimonia) | – | >1500 | – |
+| keijzer1_alpha1e6 | 200 | 1 | 0.0024 | 🟡 aceptable | 373 | 309 | `4.45·0.283·sin(sin(0.71(|x|·x-0.011)-0.014)+1.587x³+…)` (373 nodos; `simplify` > 10 min) |
 | feyn_gauss_alpha1e6 | 300 | 1 | 4.3e-05 | ⚠️ 'recuperada' por MSE<1e-6 pero NMSE alto | 77 | 145.1 | `Abs(0.700495380013329*cos(x) + 0.350247690006665*sqrt(Abs(cos(0.384196999450219*` |
 | feyn_rel_alpha1e6 | 200 | 1 | 0.00022 | 🟢 muy buena | 158 | 217.4 | `(1.91869190523808*2**(1/4)*Abs(x**(1/4)*sin(0.753501718575538*Abs(x**(1/4)*(x + ` |
 
@@ -250,7 +277,7 @@ antes de usar la expresión fuera del motor.
 |---|---:|---:|---:|---|---:|---:|---|
 | ruido_1pct | 400 | 1 | 8.3e-05 | 🟢 muy buena | 51 | 266.6 | `x**2*(1.9998539686203*x + 0.400960491380283) + 2.93329500406981*sin(x) + cos(cos` |
 | ruido_10pct | 400 | 1 | 0.008 | 🟡 aceptable | 390 | 554.2 | `x*(24*x**2 + 17*(-sin(Abs(x - 3.03155689088838)))**(sqrt(Abs(x + 1))))/12` |
-| ruido_50pct | 400 | 1 | – | ⏱ > 25 min sin terminar (bloat por ruido) | – | >1500 | – |
+| ruido_50pct | 400 | 1 | 0.15 | 🟠 pobre · MSE train 1637 < var(ruido) 2210: **sobreajuste** | 616 | 383 | `|1.004x²|·2x + cos(cos(x·(…)))…` (616 nodos; `simplify` > 10 min) |
 
 ### Pocos datos
 
@@ -263,7 +290,7 @@ antes de usar la expresión fuera del motor.
 
 | Caso | n | vars | NMSE | Estado | Nodos | t (s) | Expresión obtenida (SymPy) |
 |---|---:|---:|---:|---|---:|---:|---|
-| escala_grande | 300 | 1 | – | ⏱ > 25 min sin terminar (Y ~ 1e4, alpha irrelevante → bloat) | – | >1500 | – |
+| escala_grande | 300 | 1 | 0.0002 | 🟢 muy buena numéricamente, pero no es `1e4x²+1e3` | 937 | 426 | `sqrt(|1.0347·sin(log|sin x|)/cos(…)…|)` (937 nodos; `simplify` > 10 min) |
 | escala_chica | 300 | 1 | 1 | ⚠️ 'recuperada' por MSE<1e-6 pero NMSE alto | 1 | 28.8 | `0` |
 | offset100 | 300 | 1 | 0.0019 | 🟡 aceptable | 28 | 123.4 | `0.289242338994669**cos(1.32288864254951*x - 0.0535335838794708) + sin(x - 8/5) +` |
 | x_grande | 300 | 1 | 0.018 | 🟠 pobre | 21 | 114.2 | `log(Abs(-115*log(Abs(x)) + 5*sqrt(115)*sqrt(Abs(x)) + 92)/115) + sin(3.007597544` |
@@ -297,5 +324,6 @@ los 8 presets y, para el resto, una llamada idéntica a `evolve_islands` +
 `fine_tune_hof` + `recognize_constants` con los mismos hiperparámetros (ver el
 cuerpo de `correr_benchmark`), cambiando solo `X`, `Y`, el catálogo o `alpha`.
 Entorno: Python 3.11, torch 2.14 CPU, numpy 2.4, sympy 1.14; `CUDA_VISIBLE_DEVICES=""`,
-`OMP_NUM_THREADS=1`, 4 corridas en paralelo. Las corridas marcadas "> 25 min" se
-cortaron con `timeout 1500`.
+`OMP_NUM_THREADS=1`, 4 corridas en paralelo. Los tres casos con árboles > 300 nodos
+(keijzer1_alpha1e6, ruido_50pct, escala_grande) se repitieron midiendo cada etapa,
+con `sp.simplify` limitado a 10 min (cortado en los tres).
