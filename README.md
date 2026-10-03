@@ -15,7 +15,7 @@ Adam y exportación a SymPy.
 ```bash
 ./setup.sh        # instalación automática: crea .venv, detecta GPU/CPU,
                   # instala torch + dependencias y VERIFICA todo (imports,
-                  # CUDA, humo del motor y los 24 tests). Flags: --cpu,
+                  # CUDA, humo del motor y los 29 tests). Flags: --cpu,
                   # --solo-verificar
 ```
 
@@ -89,9 +89,11 @@ generaciones, así que la cancelación tarda como mucho un bloque.
 | `symreg.eml` | Modo EML puro: `eml(x,y) = exp(x) - ln(y)` con multi-starts por lotes |
 | `symreg.export` | Exportación a SymPy, roundtrip numérico, lambdify robusto |
 | `symreg.checkpoint` | Checkpoints de corridas largas (JSON) |
+| `symreg.mpi` | Islas distribuidas con MPI: una GPU por rango, migración entre procesos/nodos |
 | `symreg.benchmarks` | Suite Nguyen/Keijzer/Feynman (ver `BENCHMARKS.md`) |
 
-Tests: `pytest tests/` (24 tests; pasan en GPU y en CPU con `CUDA_VISIBLE_DEVICES=""`).
+Tests: `pytest tests/` (29 tests; pasan en GPU y en CPU con `CUDA_VISIBLE_DEVICES=""`;
+el test de `mpirun -np 2` se omite si no hay mpi4py/mpirun).
 
 ## Rendimiento GPU (RTX 4090)
 
@@ -137,6 +139,43 @@ torch cubre CPU y CUDA con el mismo código, y cada helper estaba duplicado.
 - **Reconocimiento de constantes**: `2.9999*sin(x) → 3*sin(x)` (round +
   `sympy.nsimplify` con π, e y fracciones), aceptando solo si el MSE no empeora.
 
+## Islas distribuidas con MPI (multi-GPU / multi-nodo)
+
+`evolve_islands` corre todas las islas en secuencia sobre una sola GPU.
+`evolve_islands_mpi` (Fase 7) reparte las islas entre procesos MPI: cada rango
+evoluciona su bloque de islas en **su propio dispositivo** (`cuda:<rango local %
+nº GPUs>`, o CPU si no hay CUDA), la migración en anillo cruza los rangos con
+`MPI_Sendrecv` (árboles serializados a JSON) y el Hall of Fame se fusiona con
+`allgather`, así que **todos los rangos devuelven el mismo resultado**.
+
+```bash
+pip install mpi4py                       # opcional; requiere una implementación MPI (OpenMPI/MPICH)
+mpirun -np 4 python mpi_islands.py --target propia --gen 250        # 4 islas, 1 GPU por rango
+mpirun -np 2 python mpi_islands.py --islands 8 --expr "x*np.sin(x)" # 4 islas por rango
+mpirun -np 4 python mpi_islands.py --csv ejemplos/tres_variables.csv
+python mpi_islands.py --target nguyen6                              # sin mpirun: 1 rango
+```
+
+```python
+import symreg
+best, fit, hist, aos, hof = symreg.evolve_islands_mpi(
+    X, Y, cat_un, cat_bin, n_islands=8, generations=250, pop_size=160,
+    val_fraction=0.2, finetune_steps=250, restart_patience=80)   # igual que evolve_islands
+```
+
+- Solo el rango 0 necesita los datos (`X`, `Y`; el resto puede pasar `None`):
+  se difunden con `bcast`. El split de validación y las semillas (`seed +
+  1000·rango`) son deterministas por rango.
+- `finetune_steps > 0` afina las constantes del Hall of Fame **local** de cada
+  rango antes de fusionar, repartiendo también el Adam entre GPUs.
+- `symreg.set_device("cuda:1")` cambia el dispositivo en runtime para cualquier
+  corrida (también sin MPI). `symreg.rank_device()` devuelve el que tocaría a
+  este rango.
+- Sin `mpi4py` (o fuera de `mpirun`) la función corre en serie con un
+  comunicador de tamaño 1: misma dinámica que `evolve_islands`.
+- Medido en CPU (2 rangos × 2 islas, nguyen6, 60 generaciones): recuperación
+  exacta en 13 s; en GPU el coste por generación es el de una isla por rango.
+
 ## Operador EML
 
 `eml(x,y) = exp(x) - ln(y)` genera todas las funciones elementales
@@ -179,3 +218,5 @@ Si conoces `y'` y/o `y''`: `config.USE_DERIV_LOSS=True`, `config.DY=...`,
 5. **Validación**: benchmarks multi-semilla + soporte multivariable.
 6. **Ingeniería**: paquete `symreg`, 24 tests, serialización JSON,
    checkpoints, este README.
+7. **MPI**: islas distribuidas entre procesos/GPUs/nodos (`symreg.mpi`,
+   `mpi_islands.py`), `set_device` en runtime, 5 tests nuevos (29).

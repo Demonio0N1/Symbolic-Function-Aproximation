@@ -5,7 +5,7 @@
 # Los flags de configuración viven en symreg.config (mutables en runtime).
 from . import config
 from .aos import OperatorManager
-from .backend import device, info, to_device, to_numpy
+from .backend import device, info, set_device, to_device, to_numpy
 from .benchmarks import TARGETS, correr_benchmark, tabla_markdown
 from .checkpoint import load_checkpoint, save_checkpoint
 from .eml import eml_pure_fit, eml_pure_train, _eml_full_structure, _eml_structure_from_tree
@@ -16,6 +16,7 @@ from .evolve import (HallOfFame, crossover, dedup_population, eval_population_ba
                      random_node, random_terminal)
 from .export import check_sympy_roundtrip, lambdify_expr, safe_derivative, to_sympy
 from .finetune import fine_tune_constants, fine_tune_hof, recognize_constants
+from .mpi import evolve_islands_mpi, get_comm, rank_device
 from .ops import (BINARY_MAP, SELECT_BIN, SELECT_UN, UNARY_MAP, build_catalogs)
 from .tree import (Abs, Acos, Add, Asin, Atan, Beta, ChebyshevT, Constant, Cos,
                    Div, Eml, Erf, Erfc, FloatInput, Gamma, J0, J1, LegendreP,

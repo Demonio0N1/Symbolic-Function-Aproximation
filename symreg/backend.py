@@ -17,8 +17,27 @@ if config.USE_TF32:
 def info():
     """Descripción del dispositivo activo (para logs)."""
     if device.type == "cuda":
-        return f"cuda ({torch.cuda.get_device_name(0)})"
+        idx = device.index if device.index is not None else torch.cuda.current_device()
+        return f"cuda:{idx} ({torch.cuda.get_device_name(idx)})"
     return "cpu"
+
+
+def set_device(dev):
+    """Cambia el dispositivo activo en runtime (Fase 7: multi-GPU / MPI).
+
+    Acepta "cpu", "cuda", "cuda:1" o un torch.device. Todos los helpers leen
+    `backend.device` en el momento de la llamada, así que el cambio aplica a las
+    corridas posteriores. Con CUDA fija además el dispositivo actual del hilo."""
+    global device
+    dev = torch.device(dev)
+    if dev.type == "cuda":
+        if not torch.cuda.is_available():
+            raise RuntimeError("se pidió CUDA pero torch.cuda.is_available() es False")
+        if dev.index is None:
+            dev = torch.device("cuda", torch.cuda.current_device())
+        torch.cuda.set_device(dev)
+    device = dev
+    return device
 
 
 def to_device(arr):
