@@ -201,6 +201,15 @@ logra la mejor recuperación exacta (propia 4/5, nguyen6 5/5, feyn_edens 4/5);
 el resto; el modo eml puro no recupera formas exactas aunque ajusta rápido
 (MSE ~1e-2–1e-3 en 4-7 s).
 
+## Límites medidos
+
+64 corridas en CPU con la configuración de los benchmarks: qué recupera y qué
+no (grado polinómico, operadores fuera del catálogo, ruido, escala, frecuencia,
+multivariable, extrapolación), con causa y remedio por límite:
+**[LIMITES.md](LIMITES.md)**. Hallazgo principal: la penalización `alpha=1e-3`
+absoluta explica las celdas 0/5 de `BENCHMARKS.md` (con `var(Y) < 1` la
+solución exacta tiene peor fitness que una aproximación de 3–5 nodos).
+
 ## Pérdida con derivadas
 
 Si conoces `y'` y/o `y''`: `config.USE_DERIV_LOSS=True`, `config.DY=...`,
